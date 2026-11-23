@@ -1,5 +1,5 @@
 """TaskManager: the business logic. No print() or input() here."""
-from models import Task
+from models import PRIORITIES, Task
 
 
 class TaskNotFoundError(Exception):
@@ -19,9 +19,9 @@ class TaskManager:
                 return task
         raise TaskNotFoundError(f"No task with id {task_id}")
 
-    def add(self, title):
+    def add(self, title, priority="medium"):
         new_id = max((task.id for task in self.tasks), default=0) + 1
-        task = Task(new_id, title)
+        task = Task(new_id, title, priority=priority)
         self.tasks.append(task)
         self.save()
         return task
@@ -38,8 +38,18 @@ class TaskManager:
         self.save()
         return task
 
-    def list(self):
-        return list(self.tasks)
+    def list(self, status="all"):
+        """Return tasks sorted by priority. status: all, open or done."""
+        if status not in ("all", "open", "done"):
+            raise ValueError("Filter must be all, open or done")
+        tasks = [
+            task for task in self.tasks
+            if status == "all"
+            or (status == "done") == task.done
+        ]
+        return sorted(
+            tasks, key=lambda task: (PRIORITIES.index(task.priority), task.id)
+        )
 
     def save(self):
         self.storage.save(self.tasks)
