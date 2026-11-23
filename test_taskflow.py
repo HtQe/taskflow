@@ -47,7 +47,30 @@ class TaskFlowTests(unittest.TestCase):
     def test_str_shows_check_mark(self):
         task = Task(1, "Write tests")
         task.mark_done()
-        self.assertEqual(str(task), "[✓] 1. Write tests")
+        self.assertEqual(str(task), "[✓] 1. Write tests (medium)")
+
+    def test_invalid_priority_is_rejected(self):
+        with self.assertRaises(ValueError):
+            self.manager.add("Bad", "urgent")
+
+    def test_list_is_sorted_by_priority(self):
+        self.manager.add("low one", "low")
+        self.manager.add("high one", "high")
+        self.manager.add("mid one")
+        titles = [task.title for task in self.manager.list()]
+        self.assertEqual(titles, ["high one", "mid one", "low one"])
+
+    def test_filter_open_and_done(self):
+        first = self.manager.add("a")
+        self.manager.add("b")
+        self.manager.complete(first.id)
+        self.assertEqual([t.title for t in self.manager.list("done")], ["a"])
+        self.assertEqual([t.title for t in self.manager.list("open")], ["b"])
+
+    def test_old_files_without_priority_still_load(self):
+        with open(self.path, "w", encoding="utf-8") as file:
+            file.write('[{"id": 1, "title": "old", "done": false}]')
+        self.assertEqual(Storage(self.path).load()[0].priority, "medium")
 
 
 if __name__ == "__main__":
