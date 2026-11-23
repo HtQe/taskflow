@@ -7,6 +7,8 @@ Tasks are saved to `tasks.json`, so they are still there after a restart.
 
 - Add, list, complete and delete tasks
 - Input is validated: typing letters or a wrong id never crashes the app
+- Priority for every task: `high`, `medium` (default) or `low`
+- The list is sorted by priority and can be filtered: `all`, `open` or `done`
 
 ## Project structure
 

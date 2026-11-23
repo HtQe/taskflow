@@ -15,7 +15,8 @@ def ask_id(prompt):
 
 
 def show_tasks(manager):
-    tasks = manager.list()
+    status = input("Show all/open/done [all]: ").strip().lower() or "all"
+    tasks = manager.list(status)
     if not tasks:
         print("No tasks yet.")
     for task in tasks:
@@ -29,7 +30,9 @@ def main():
         choice = input("> ").strip()
         try:
             if choice == "1":
-                task = manager.add(input("Title: "))
+                title = input("Title: ")
+                priority = input("Priority high/medium/low [medium]: ")
+                task = manager.add(title, priority.strip() or "medium")
                 print(f"Added #{task.id}")
             elif choice == "2":
                 show_tasks(manager)
