@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <header>
+      <h1>TaskFlow</h1>
+      <p id="counter" class="muted"></p>
+    </header>
+
+    <form id="add-form">
+      <input id="title" type="text" maxlength="100"
+             placeholder="What needs to be done?" required>
+      <select id="priority">
+        <option value="high">High</option>
+        <option value="medium" selected>Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <button type="submit">Add</button>
+    </form>
+    <p id="error" class="error" hidden></p>
+
+    <nav class="filters">
+      <button data-status="all" class="active">All</button>
+      <button data-status="open">Open</button>
+      <button data-status="done">Done</button>
+    </nav>
+
+    <ul id="task-list"></ul>
+    <p id="empty" class="muted" hidden>No tasks here.</p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
