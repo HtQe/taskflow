@@ -6,6 +6,11 @@ class TaskNotFoundError(Exception):
     """Raised when no task has the requested id."""
 
 
+def count_open(tasks):
+    """How many tasks are not done."""
+    return sum(not task.done for task in tasks)
+
+
 class TaskManager:
     """Keeps the task list and saves it through a Storage object."""
 
